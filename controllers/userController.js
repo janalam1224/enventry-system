@@ -1,23 +1,16 @@
 
 const registeredUser = [
   {
-    id: "1",
+    id: 1,
     fullName: "janalam",
     email: "janalam123@gmail.com"
   },
   {
-    id: "2",
+    id: 2,
     fullName: "kamran",
     email: "kamran123@gmail.com"
   }
 ];
-
-exports.getIndex = (req, res) => {
-  res.send(`
-    <h1>Welcome to Home</h1>
-    <a href="/users">Users List</a><br>
-  `);
-};
 
 exports.fetchUsers = (req, res) => {
   res.status(200).json(registeredUser);
@@ -56,16 +49,13 @@ exports.editUser = (req, res) => {
   const { fullName, email } = req.body;
   const userId = req.params.id;
   
-  const user = registeredUser.find(user => user.id === userId);
-
-  if (user) {
-    user.fullName = fullName || user.fullName;
-    user.email = email || user.email;
-    return res.status(200).json({ message: "User updated successfully", user });
-  } else {
-    return res.status(404).json({ message: "User not found" });
-  }
-};
+  const userIndex = registeredUser.findIndex(user => user.id === Number(userId));
+ if(userIndex !== -1){
+  registeredUser[userIndex].fullName= fullName;
+  registeredUser[userIndex].email= email;
+ }
+ return res.status(200).json({ msg: "User Updated", user:registeredUser[userIndex]});
+}
 
 exports.deleteUser = (req, res) => {
   const userId = req.params.id;
