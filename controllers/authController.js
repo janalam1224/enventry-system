@@ -1,3 +1,5 @@
+const { loginSchema } = require('../validators/auth-validator');
+
 const authLogin = [
   { 
     email: "janalam123@gmail.com",
@@ -5,20 +7,25 @@ const authLogin = [
   },
   {
     email: "kamran123@gmail.com",
-    password: "123"
+    password: "123456789"
   }
 ];
 
-exports.getIndex = (req, res) => {
-  res.send(`
-    <h1>Welcome to Home</h1>
-  `);
-};
-
 exports.postLogin = (req, res, next) => {
-  const { email, password } = req.body;
+  const result = loginSchema.safeParse(req.body);
 
-  const validUser = authLogin.find(user => user.email === email && user.password === password);
+  if (!result.success) {
+    return res.status(400).json({
+      message: "Validation failed",
+      errors: result.error.errors
+    });
+  }
+
+  const { email, password } = result.data;
+
+  const validUser = authLogin.find(
+    user => user.email === email && user.password === password
+  );
 
   if (validUser) {
     return res.status(200).json({

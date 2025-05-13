@@ -1,11 +1,8 @@
 const express = require('express');
-const authRouter = express.Router();
-const authController = require('../controllers/authController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const router = express.Router();
+const { postLogin } = require('../controllers/authController');
+const { route } = require('./userRouter');
 
-authRouter.get("/", authController.getIndex);
-authRouter.post('/login', authController.postLogin);
-authRouter.get('/', authMiddleware, (req, res) => {
-  res.json("welcome to Users Page");
-});
-module.exports = authRouter;
+router.post('/', postLogin);
+
+module.exports = router;

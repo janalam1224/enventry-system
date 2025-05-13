@@ -1,13 +1,23 @@
 const express = require('express');
-const productRouter = express.Router();
-const productController = require('../controllers/productController');
+const router = express.Router();
+const admin = require('../firebaseAdmin'); 
 
-app.get('/products', productController.getProducts);
-app.post('/products', productController.postProduct);
-app.get('/products/:productId', productController.findProduct);
-app.put('/products', productController.editProduct);
-app.delete('/products/:productId', productController.deleteProduct);
+const {
+ getProducts,
+ postProduct,
+ findProduct,
+ editProduct,
+ deleteProduct,
+} = require('../controllers/productController');
 
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
-});
+router.route('/')
+.get(getProducts)
+.post(postProduct);
+
+router.route('/:id')
+.get(findProduct)
+.put(editProduct)
+.delete(deleteProduct);
+
+module.exports = router;
+

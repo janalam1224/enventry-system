@@ -59,7 +59,7 @@ exports.editUser = (req, res) => {
 
 exports.deleteUser = (req, res) => {
   const userId = req.params.id;
-  const index = registeredUser.findIndex(user => user.id === userId);
+  const index = registeredUser.findIndex(user => user.id === Number(userId));
 
   if (index !== -1) {
     const deletedUser = registeredUser.splice(index, 1);
